@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RoadmapChecklist.Entity.Relations
 {
-    public class RoadmapCopy
+    public class RoadmapCopy : BaseEntity
     {
         public int SourceId { get; set; }
         public int TargetId { get; set; }
