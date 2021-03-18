@@ -1,11 +1,12 @@
 ﻿using RoadmapChecklist.Entity.Extension;
+using System;
 
 namespace RoadmapChecklist.Entity.Relations
 {
     public class RoadmapCategory : BaseEntity
     {
-        public int CategoryId { get; set; }
-        public int RoadmapId { get; set; }
+        public Guid CategoryId { get; set; }
+        public Guid RoadmapId { get; set; }
 
         // Relations
         public virtual Category Category { get; set; }

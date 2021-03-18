@@ -19,7 +19,7 @@ namespace Data.Builders.Extension
             // Relations
             builder.HasMany(t => t.RoadmapTags)
                 .WithOne(rt => rt.Tag)
-                .HasForeignKey(rt => rt.Tag.Id)
+                .HasForeignKey(rt => rt.Id)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

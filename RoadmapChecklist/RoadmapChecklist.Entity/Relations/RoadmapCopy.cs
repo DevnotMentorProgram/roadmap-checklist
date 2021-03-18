@@ -6,11 +6,11 @@ namespace RoadmapChecklist.Entity.Relations
 {
     public class RoadmapCopy : BaseEntity
     {
-        public int SourceId { get; set; }
-        public int TargetId { get; set; }
+        public Guid SourceId { get; set; }
+        public Guid TargetId { get; set; }
 
         // Relations
-        public virtual Roadmap.Roadmap SourceRoudmap { get; set; }
+        public virtual Roadmap.Roadmap SourceRoadmap { get; set; }
         public virtual Roadmap.Roadmap TargetRoadmap { get; set; }
     }
 }

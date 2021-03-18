@@ -31,12 +31,13 @@ namespace Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new CategoryBuilder());
-            modelBuilder.ApplyConfiguration(new RoadmapCategoryBuilder());
+            modelBuilder.ApplyConfiguration(new TagBuilder());
             modelBuilder.ApplyConfiguration(new RoadmapBuilder());
             modelBuilder.ApplyConfiguration(new RoadmapCopyBuilder());
-            modelBuilder.ApplyConfiguration(new TagBuilder());
             modelBuilder.ApplyConfiguration(new RoadmapTagBuilder());
+            modelBuilder.ApplyConfiguration(new RoadmapCategoryBuilder());
             modelBuilder.ApplyConfiguration(new UserBuilder());
+            modelBuilder.ApplyConfiguration(new RoadmapItemItemBuilder());
         }
     }
 }

@@ -11,7 +11,7 @@ namespace RoadmapChecklist.Entity.Roadmap
         public int Visibility { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
 
         // Relations
         public virtual User.User User { get; set; }

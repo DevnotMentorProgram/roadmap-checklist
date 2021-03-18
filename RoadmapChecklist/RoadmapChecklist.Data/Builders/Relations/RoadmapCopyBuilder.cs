@@ -9,11 +9,11 @@ namespace Data.Builders.Relations
 {
     public class RoadmapCopyBuilder : BaseEntityBuilder<RoadmapCopy>
     {
-        public void Configure(EntityTypeBuilder<RoadmapCopy> builder)
+        public override void Configure(EntityTypeBuilder<RoadmapCopy> builder)
         {
-            builder.HasKey(rc => new { rc.SourceId, rc.TargetId });
+            builder.HasKey(rc => new { rc.Id});
 
-            builder.HasOne(rc => rc.SourceRoudmap)
+            builder.HasOne(rc => rc.SourceRoadmap)
                 .WithMany(r => r.Sources)
                 .HasForeignKey(rc => rc.SourceId)
                 .OnDelete(DeleteBehavior.NoAction);

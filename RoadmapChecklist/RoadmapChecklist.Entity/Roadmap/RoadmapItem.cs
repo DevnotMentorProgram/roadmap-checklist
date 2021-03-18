@@ -10,8 +10,8 @@ namespace RoadmapChecklist.Entity.Roadmap
         public string Description { get; set; }
         public DateTime? TargetDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public int? ParentId { get; set; }
-        public int RoadmapId { get; set; }
+        public Guid? ParentId { get; set; }
+        public Guid RoadmapId { get; set; }
         public int Order { get; set; } = 0;
 
         // Relations

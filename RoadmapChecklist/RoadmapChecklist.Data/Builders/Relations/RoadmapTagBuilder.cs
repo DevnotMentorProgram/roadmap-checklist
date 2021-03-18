@@ -13,20 +13,17 @@ namespace Data.Builders.Relations
         {
             base.Configure(builder);
 
-            //fields
-            builder.HasKey(roadmapTag => roadmapTag.Id);
-            builder.Property(roadmapTag => roadmapTag.Id).ValueGeneratedOnAdd();
-            builder.Property(roadmapTag => roadmapTag.Tag.Id).IsRequired();
-            builder.Property(roadmapTag => roadmapTag.RoadmapId).IsRequired();
+            builder.Property(cr => cr.TagId).IsRequired();
+            builder.Property(cr => cr.RoadmapId).IsRequired();
 
             //relations
             builder.HasOne(roadmapTag => roadmapTag.Tag)
                 .WithMany(tag => tag.RoadmapTags)
-                .HasForeignKey(roadmapTag => roadmapTag.Tag.Id)
+                .HasForeignKey(roadmapTag => roadmapTag.TagId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
 
-            builder.HasOne(roadmapTag => roadmapTag.Roadmap)
+            builder.HasOne(roadmapCategory => roadmapCategory.Roadmap)
                 .WithMany(roadmap => roadmap.Tags)
                 .HasForeignKey(roadmapTag => roadmapTag.RoadmapId)
                 .OnDelete(DeleteBehavior.Cascade)
