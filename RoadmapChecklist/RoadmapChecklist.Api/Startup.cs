@@ -8,6 +8,9 @@ using Microsoft.Extensions.Hosting;
 using Data.Infrastructure.Repository;
 using Data.Infratructure.UnitOfWork;
 using RoadmapChecklist.Service.User;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System;
 
 namespace RoadmapChecklist.Api
 {
@@ -25,9 +28,24 @@ namespace RoadmapChecklist.Api
         {
             services.AddControllers();
 
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => false;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
             services.AddDbContext<RoadmapChecklistDbContext>(opt => 
                 opt.UseSqlServer(Configuration.GetConnectionString("Default")));
-            
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+           .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, c =>
+           {
+               c.Cookie.Name = "RoadMapCheckList";
+               c.SlidingExpiration = true;
+               c.ExpireTimeSpan = TimeSpan.FromDays(1);
+               c.Cookie.HttpOnly = true;
+           });
+
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
@@ -49,6 +67,7 @@ namespace RoadmapChecklist.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -59,7 +78,7 @@ namespace RoadmapChecklist.Api
             app.UseSwagger();  
             app.UseSwaggerUI(c =>  
             {  
-               c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Test1 Api v1");  
+               c.SwaggerEndpoint("/swagger/v1/swagger.json", "RoadmapChecklist Api");  
             });  
         }
     }

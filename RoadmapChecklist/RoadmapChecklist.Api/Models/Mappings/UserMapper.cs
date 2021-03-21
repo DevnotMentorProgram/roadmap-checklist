@@ -17,6 +17,15 @@ namespace RoadmapChecklist.Api.Models.Mappings
             };
         }
 
+        public static User MapUserLoginModel(Login userLoginModel)
+        {
+            return new User
+            {
+                Email = userLoginModel.Email,
+                Password = MD5Hash(userLoginModel.Password)
+            };
+        }
+
         public static string MD5Hash(string input)
         {
             using (var md5 = MD5.Create())
