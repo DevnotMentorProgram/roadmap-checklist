@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Data.Infratructure.Repository
+namespace Data.Infrastructure.Repository
 {
     public class EfRepository<T> : IRepository<T> where T : class
     {

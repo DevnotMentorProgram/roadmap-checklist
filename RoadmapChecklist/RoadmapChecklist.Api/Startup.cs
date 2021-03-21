@@ -1,17 +1,13 @@
 using Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Data.Infrastructure.Repository;
+using Data.Infratructure.UnitOfWork;
+using RoadmapChecklist.Service.User;
 
 namespace RoadmapChecklist.Api
 {
@@ -29,7 +25,16 @@ namespace RoadmapChecklist.Api
         {
             services.AddControllers();
 
-            services.AddDbContext<RoadmapChecklistDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddDbContext<RoadmapChecklistDbContext>(opt => 
+                opt.UseSqlServer(Configuration.GetConnectionString("Default")));
+            
+            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+
+            services.AddTransient(typeof(IUserService), typeof(UserService));
+            
+            services.AddSwaggerGen();  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +55,12 @@ namespace RoadmapChecklist.Api
             {
                 endpoints.MapControllers();
             });
+            
+            app.UseSwagger();  
+            app.UseSwaggerUI(c =>  
+            {  
+               c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Test1 Api v1");  
+            });  
         }
     }
 }

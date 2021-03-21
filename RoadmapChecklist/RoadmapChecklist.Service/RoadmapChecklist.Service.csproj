@@ -4,4 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RoadmapChecklist.Core\RoadmapChecklist.Core.csproj" />
+    <ProjectReference Include="..\RoadmapChecklist.Data\RoadmapChecklist.Data.csproj" />
+    <ProjectReference Include="..\RoadmapChecklist.Entity\RoadmapChecklist.Entity.csproj" />
+  </ItemGroup>
+
 </Project>
