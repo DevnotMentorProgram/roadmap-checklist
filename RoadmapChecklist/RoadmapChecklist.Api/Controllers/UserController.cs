@@ -19,13 +19,13 @@ namespace RoadmapChecklist.Api.Controllers
         [HttpPost("register")]
         public IActionResult Register([FromBody]Register userRegisterModel)
         {
-            var isUserValidForRegister = service.IsUserValidForRegister(userRegisterModel.Email.ToLower(), userRegisterModel.UserName);
+            var isUserValidForRegister = service.IsUserValidForRegister(userRegisterModel.Email, userRegisterModel.UserName);
 
             var user = isUserValidForRegister.IsSuccess ? isUserValidForRegister.Data : null;
             
-            if (isUserValidForRegister != null)
+            if (user != null)
             {
-                if (user.Email == userRegisterModel.Email.ToLower())
+                if (user.Email == userRegisterModel.Email)
                 {
                     ModelState.AddModelError("Email" , "Email already exists!");
                 } 
