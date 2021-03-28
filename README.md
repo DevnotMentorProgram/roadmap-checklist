@@ -46,8 +46,8 @@ Roadmap checklist, is a platform where roadmaps that can be created for specific
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [contributors-shield]: https://img.shields.io/github/contributors/handeebrar/algorithms-practices.svg?style=for-the-badge
-[contributors-url]: https://github.com/handeebrar/algorithms-practices/graphs/contributors
+[contributors-url]: https://github.com/DevnotMentorProgram/roadmap-checklist/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/handeebrar/algorithms-practices.svg?style=for-the-badge
-[forks-url]: https://github.com/handeebrar/algorithms-practices/network/members
+[forks-url]: https://github.com/DevnotMentorProgram/roadmap-checklist/network/members
 [stars-shield]: https://img.shields.io/github/stars/handeebrar/algorithms-practices.svg?style=for-the-badge
-[stars-url]: https://github.com/handeebrar/algorithms-practices/stargazers
+[stars-url]: https://github.com/DevnotMentorProgram/roadmap-checklist/stargazers
