@@ -1,17 +1,16 @@
 using Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Data.Infrastructure.Repository;
+using Data.Infratructure.UnitOfWork;
+using RoadmapChecklist.Service.User;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RoadmapChecklist.Api
 {
@@ -29,7 +28,31 @@ namespace RoadmapChecklist.Api
         {
             services.AddControllers();
 
-            services.AddDbContext<RoadmapChecklistDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => false;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddDbContext<RoadmapChecklistDbContext>(opt => 
+                opt.UseSqlServer(Configuration.GetConnectionString("Default")));
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+           .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, c =>
+           {
+               c.Cookie.Name = "RoadMapCheckList";
+               c.SlidingExpiration = true;
+               c.ExpireTimeSpan = TimeSpan.FromDays(1);
+               c.Cookie.HttpOnly = true;
+           });
+
+            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+
+            services.AddTransient(typeof(IUserService), typeof(UserService));
+            
+            services.AddSwaggerGen();  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,12 +67,19 @@ namespace RoadmapChecklist.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+            
+            app.UseSwagger();  
+            app.UseSwaggerUI(c =>  
+            {  
+               c.SwaggerEndpoint("/swagger/v1/swagger.json", "RoadmapChecklist Api");  
+            });  
         }
     }
 }
