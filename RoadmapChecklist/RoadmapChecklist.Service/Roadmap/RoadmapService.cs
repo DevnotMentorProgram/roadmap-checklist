@@ -1,7 +1,9 @@
 ﻿using Data.Infrastructure.Repository;
 using Data.Infratructure.UnitOfWork;
+using RoadmapChecklist.Core.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 
 namespace RoadmapChecklist.Service.Roadmap
@@ -91,6 +93,41 @@ namespace RoadmapChecklist.Service.Roadmap
             }
 
             return result;
+        }
+
+        public ReturnModel<Entity.Roadmap.Roadmap> IsRoadmapValidForEdit(Entity.Roadmap.Roadmap roadmap)
+        {
+            var result = new ReturnModel<Entity.Roadmap.Roadmap>();
+
+            try
+            {
+                result.Data = _repository.Get(x => x.Id == roadmap.Id && x.UserId == roadmap.UserId && x.Status == (int)StatusEnum.ActiveRoadmap);
+            }
+            catch (Exception exception)
+            {
+                result.IsSuccess = false;
+                result.Exception = exception;
+                result.Message = exception.Message;
+            }
+
+            return result;
+        }
+
+        public void Delete(Entity.Roadmap.Roadmap roadmap)
+        {
+            var result = new ReturnModel<Entity.Roadmap.Roadmap>();
+
+            try
+            {
+                _repository.Delete(roadmap);
+                Save();
+            }
+            catch (Exception exception)
+            {
+                result.IsSuccess = false;
+                result.Exception = exception;
+                result.Message = exception.Message;
+            }
         }
         private void Save()
         {
