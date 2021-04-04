@@ -65,5 +65,10 @@ namespace Data.Infrastructure.Repository
             if (orderBy != null) { set = isOrderByAsc ? set.OrderBy(orderBy) : set.OrderByDescending(orderBy); }
             return set;
         }
+
+        public void UpdateRange(IList<T> entity)
+        {
+            dbSet.UpdateRange(entity);
+        }
     }
 }

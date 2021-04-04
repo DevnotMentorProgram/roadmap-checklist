@@ -11,6 +11,7 @@ using RoadmapChecklist.Service.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
+using RoadmapChecklist.Service.Roadmaps.RoadmapItems;
 
 namespace RoadmapChecklist.Api
 {
@@ -51,6 +52,8 @@ namespace RoadmapChecklist.Api
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 
             services.AddTransient(typeof(IUserService), typeof(UserService));
+
+            services.AddTransient(typeof(IRoadmapItemService), typeof(RoadmapItemService));
             
             services.AddSwaggerGen();  
         }
