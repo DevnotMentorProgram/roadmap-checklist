@@ -11,7 +11,7 @@ using RoadmapChecklist.Service.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
-using RoadmapChecklist.Service.Roadmaps.RoadmapItems;
+using RoadmapChecklist.Service.Roadmap;
 
 namespace RoadmapChecklist.Api
 {
@@ -35,7 +35,7 @@ namespace RoadmapChecklist.Api
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<RoadmapChecklistDbContext>(opt => 
+            services.AddDbContext<RoadmapChecklistDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("Default")));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -53,9 +53,9 @@ namespace RoadmapChecklist.Api
 
             services.AddTransient(typeof(IUserService), typeof(UserService));
 
-            services.AddTransient(typeof(IRoadmapItemService), typeof(RoadmapItemService));
-            
-            services.AddSwaggerGen();  
+            services.AddTransient(typeof(IRoadmapService), typeof(RoadmapService));
+
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,12 +77,12 @@ namespace RoadmapChecklist.Api
             {
                 endpoints.MapControllers();
             });
-            
-            app.UseSwagger();  
-            app.UseSwaggerUI(c =>  
-            {  
-               c.SwaggerEndpoint("/swagger/v1/swagger.json", "RoadmapChecklist Api");  
-            });  
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "RoadmapChecklist Api");
+            });
         }
     }
 }
