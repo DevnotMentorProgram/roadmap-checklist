@@ -28,6 +28,11 @@ namespace Data.Infrastructure.Repository
             dbSet.Add(entity);
         }
 
+        public void Attach(T entity)
+        {
+            dbSet.Attach(entity);
+        }
+
         public void Update(T entity)
         {
             dbSet.Attach(entity);
