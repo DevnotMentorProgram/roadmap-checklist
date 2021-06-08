@@ -8,8 +8,10 @@ namespace Data.Infrastructure.Repository
 {
     public interface IRepository<T> where T : class
     {
+        void Attach(T entity);
         void Add(T entity);
         void Update(T entity);
+        void UpdateRange(IList<T> entity);
         void Delete(T entity);
         T Get(Expression<Func<T, bool>> where,
            Expression<Func<T, object>> orderBy = null,

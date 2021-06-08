@@ -28,6 +28,11 @@ namespace Data.Infrastructure.Repository
             dbSet.Add(entity);
         }
 
+        public void Attach(T entity)
+        {
+            dbSet.Attach(entity);
+        }
+
         public void Update(T entity)
         {
             dbSet.Attach(entity);
@@ -64,6 +69,11 @@ namespace Data.Infrastructure.Repository
             set = set.Where(where);
             if (orderBy != null) { set = isOrderByAsc ? set.OrderBy(orderBy) : set.OrderByDescending(orderBy); }
             return set;
+        }
+
+        public void UpdateRange(IList<T> entity)
+        {
+            dbSet.UpdateRange(entity);
         }
     }
 }
