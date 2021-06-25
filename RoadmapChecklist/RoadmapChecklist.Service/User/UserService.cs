@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Data.Infrastructure.Repository;
@@ -131,6 +132,25 @@ namespace RoadmapChecklist.Service.User
             try
             {
                 await httpContext.SignOutAsync();
+            }
+            catch (Exception exception)
+            {
+                result.IsSuccess = false;
+                result.Exception = exception;
+                result.Message = exception.Message;
+            }
+
+            return result;
+        }
+        
+        public ReturnModel<bool> IsValidEmail(string email)
+        {
+            var result = new ReturnModel<bool>();
+            
+            try
+            {
+                var emailValidator = new EmailAddressAttribute();
+                result.Data = emailValidator.IsValid(email);
             }
             catch (Exception exception)
             {

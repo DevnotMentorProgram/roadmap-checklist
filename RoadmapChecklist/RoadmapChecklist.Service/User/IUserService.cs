@@ -9,6 +9,7 @@ namespace RoadmapChecklist.Service.User
         ReturnModel<Entity.User.User> GetById(Guid userId);
         ReturnModel<Entity.User.User> IsUserValidForRegister(string email, string userName);
         ReturnModel<Entity.User.User> IsUserValidForLogin(Entity.User.User user);
+        ReturnModel<bool> IsValidEmail(string email);
         System.Threading.Tasks.Task<ReturnModel<string>> AddUserCookieAsync(HttpContext httpContext, string id);
         System.Threading.Tasks.Task<ReturnModel<string>> DeleteUserCookieAsync(HttpContext httpContext);
     }

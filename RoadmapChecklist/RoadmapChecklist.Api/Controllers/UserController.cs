@@ -19,6 +19,13 @@ namespace RoadmapChecklist.Api.Controllers
         [HttpPost("register")]
         public IActionResult Register([FromBody]Register userRegisterModel)
         {
+            var isValidEmail = service.IsValidEmail(userRegisterModel.Email).Data;
+            
+            if (!isValidEmail)
+            {
+                ModelState.AddModelError("Email" , "Email is not valid!");
+            }
+            
             var isUserValidForRegister = service.IsUserValidForRegister(userRegisterModel.Email, userRegisterModel.UserName);
 
             var user = isUserValidForRegister.IsSuccess ? isUserValidForRegister.Data : null;
