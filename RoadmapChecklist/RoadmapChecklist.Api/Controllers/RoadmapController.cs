@@ -3,10 +3,8 @@ using RoadmapChecklist.Api.Models.Request.Roadmap;
 using RoadmapChecklist.Service.Roadmap;
 using RoadmapChecklist.Api.Models.Mappings;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using RoadmapChecklist.Core.Infrastructure;
+using System.Security.Claims;
 
 namespace RoadmapChecklist.Api.Controllers
 {
@@ -24,18 +22,28 @@ namespace RoadmapChecklist.Api.Controllers
         [HttpPost("create")]
         public ActionResult Create(Create model)
         {
-            var result = service.Create(RoadmapMapper.MapRoadmapCreateModel(model));
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (userId == null)
+                return StatusCode(401);
 
-            if (result.IsSuccess)
-                return Ok(result);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            return BadRequest(result);
+            var result = service.Create(RoadmapMapper.MapRoadmapCreateModel(model, userId));
+            return result.IsSuccess ? StatusCode(201) : StatusCode(403);
         }
 
-        [HttpPost("edit")]
-        public ActionResult Edit(Edit model)
+        [HttpPost("update")]
+        public ActionResult Update(Update model)
         {
-            var data = service.IsRoadmapValidForEdit(RoadmapMapper.MapRoadmapEditModel(model, User));
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (userId == null)
+                return StatusCode(401);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var data = service.IsRoadmapValidForEdit(RoadmapMapper.MapRoadmapUpdateModel(model, userId));
 
             var roadmap = data.IsSuccess ? data.Data : null;
 
@@ -46,18 +54,20 @@ namespace RoadmapChecklist.Api.Controllers
             roadmap.Visibility = model.Visibility;
             roadmap.StartDate = model.StartDate;
             roadmap.EndDate = model.EndDate;
+            roadmap.UpdatedAt = DateTime.Now;
 
             var result = service.Update(roadmap);
+            return result.IsSuccess ? StatusCode(200) : StatusCode(400);
 
-            if (result.IsSuccess)
-                return Ok(result);
-
-            return BadRequest(result);
         }
 
         [HttpPost("delete")]
         public ActionResult Delete(Guid id)
         {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (userId == null)
+                return StatusCode(401);
+
             var roadmapToBeDeleted = service.GetById(id);
 
             var roadmap = roadmapToBeDeleted.IsSuccess ? roadmapToBeDeleted.Data : null;
@@ -68,7 +78,18 @@ namespace RoadmapChecklist.Api.Controllers
             roadmap.Status = (int)StatusEnum.DeletedRoadmap;
             service.Delete(roadmap);
 
+            //ToDo: update database IsDeleted field
             return Ok();
+        }
+
+        [HttpPost("copy")]
+        public ActionResult Copy(Guid roadmapId, Guid userId)
+        {
+            if (userId == null)
+                return StatusCode(401);
+
+            var result = service.Copy(roadmapId, userId);
+            return result.IsSuccess ? StatusCode(200) : StatusCode(404);
         }
     }
 }

@@ -8,26 +8,27 @@ namespace RoadmapChecklist.Api.Models.Mappings
 {
     public class RoadmapMapper
     {
-        public static Roadmap MapRoadmapCreateModel(Create roadmapCreateModel)
+        public static Roadmap MapRoadmapCreateModel(Create roadmapCreateModel, Guid userId)
         {
             return new Roadmap
             {
                 Name = roadmapCreateModel.Name,
                 Visibility = roadmapCreateModel.Visibility,
                 StartDate = roadmapCreateModel.StartDate,
-                EndDate = roadmapCreateModel.EndDate
+                EndDate = roadmapCreateModel.EndDate,
+                UserId = userId
             };
         }
 
-        public static Roadmap MapRoadmapEditModel(Edit roadmapEditModel, ClaimsPrincipal user = null)
+        public static Roadmap MapRoadmapUpdateModel(Update roadmapUpdateModel, Guid userId)
         {
             return new Roadmap
             {
-                Name = roadmapEditModel.Name,
-                Visibility = roadmapEditModel.Visibility,
-                StartDate = roadmapEditModel.StartDate,
-                EndDate = roadmapEditModel.EndDate,
-                UserId = Guid.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier))
+                Name = roadmapUpdateModel.Name,
+                Visibility = roadmapUpdateModel.Visibility,
+                StartDate = roadmapUpdateModel.StartDate,
+                EndDate = roadmapUpdateModel.EndDate,
+                UserId = userId
             };
         }
     }
